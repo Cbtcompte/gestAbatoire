@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class App extends Model
+class Configsociete extends Model
 {
     use HasFactory;
-
     protected $fillable = [
-        'nom',
         'societe_id',
+        'type_user',
+        'type_article',
+        'type_sousarticle'
     ];
 
     public function societe(){

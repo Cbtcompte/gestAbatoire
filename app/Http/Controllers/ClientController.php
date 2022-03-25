@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Client;
 
 class ClientController extends Controller
 {
@@ -34,7 +35,21 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string',
+            'telephone' => 'nullable|digits:8|unique:clients',
+            'email' => 'nullable|email|unique:clients',
+        ]);
+
+        $client = Client::create([
+            'name' => $request->name,
+            'telephone' => $request->telephone,
+            'email' => $request->email,
+        ]);
+
+        return response()->json([
+            'client' => $client
+        ]);
     }
 
     /**

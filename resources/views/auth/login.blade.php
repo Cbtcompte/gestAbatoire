@@ -11,13 +11,13 @@
             <form action="{{ route('login') }}" method="POST">
                 @csrf
               <div class="input-group" style="border:2px solid #efefef; margin-bottom:1rem; padding-left:8px">
-                <input type="text" name="username" class="form-control  @error('username') is-invalid @enderror" placeholder="Nom d'utilisateur" id="username">
+                <input type="text" name="name" class="form-control  @error('name') is-invalid @enderror" placeholder="Nom d'utilisateur" id="username">
                 <div class="input-group-append">
                     <div class="input-group-text">
                       <span class="fas fa-envelope"></span>
                     </div>
                   </div>
-                @error('username')
+                @error('name')
                 <span class="invalid-feedback">
                     {{ $message }}
                 </span>

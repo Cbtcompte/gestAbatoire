@@ -12,7 +12,7 @@
           <img src="{{ asset('dashboard/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block" style="color:#6c757d">Alexander Pierce</a>
+          <a href="#" class="d-block" style="color:#6c757d">{{ auth()->user()->name }}</a>
         </div>
       </div>
 
@@ -38,102 +38,86 @@
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Tableau de bord
-               
               </p>
             </a>
           </li>
-          
+
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-user"></i>
+              <i class="nav-icon fas fa-file-invoice"></i>
               <p>
-                Utilisateurs
+                Factures
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/charts/chartjs.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Liste des utilisateurs</p>
+                <a href="{{ route('facture.create')}}" class="nav-link">
+                  <i class="fas fa-file-invoice-dollar nav-icon"></i>
+                  <p>Etablir une facture</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/charts/flot.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Ajouter un utilisateur</p>
+                <a href="{{ route('facture.index')}}" class="nav-link">
+                  <i class="fas fa-file-alt nav-icon"></i>
+                  <p>Liste des factures</p>
                 </a>
               </li>
-              
+
             </ul>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-setting"></i>
-              <p>
-                Configuration
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/UI/general.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>General</p>
+          @if(auth()->user()->role == "admin")
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-user-tie"></i>
+                <p>
+                    Utilisateurs
+                    <i class="right fas fa-angle-left"></i>
+                </p>
                 </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="pages/UI/buttons.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Buttons</p>
+                <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('user.index') }}" class="nav-link">
+                    <i class="fas fa-user-friends nav-icon"></i>
+                    <p>Liste des utilisateurs</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('user.create')}}" class="nav-link">
+                    <i class="fas fa-user-plus nav-icon"></i>
+                    <p>Ajouter un utilisateur</p>
+                    </a>
+                </li>
+
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('setting.societe') }}" class="nav-link">
+                <i class="nav-icon fas fa-cogs"></i>
+                <p>
+                    Configuration
+                </p>
                 </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/UI/sliders.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Sliders</p>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>
+                    Historiques
+                    <i class="fas fa-angle-left right"></i>
+                </p>
                 </a>
-              </li>
-             
-              <li class="nav-item">
-                <a href="pages/UI/ribbons.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Ribbons</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
-              <p>
-                Forms
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/forms/general.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>General Elements</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/forms/advanced.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Advanced Elements</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/forms/editors.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Editors</p>
-                </a>
-              </li>
-              
-            </ul>
-          </li>
+                <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="pages/forms/general.html" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Liste des factures</p>
+                    </a>
+                </li>
+
+                </ul>
+            </li>
+          @endif
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

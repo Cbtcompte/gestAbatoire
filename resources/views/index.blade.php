@@ -18,31 +18,20 @@
           <a class="nav-link bg-light" href="#" data-widget="iframe-fullscreen"><i class="fas fa-expand"></i></a>
         </div>
         <div class="tab-content">
+          <div class="tab-pane fade active show" id="panel-index" role="tabpanel" aria-labelledby="tab-index">
+            <iframe src="{{ route('admin.dashboard') }}" style="min-height:85vh"></iframe>
+          </div>
           <div class="tab-empty">
             <h2 class="display-4">
-              <div style="display:block" data-widget="treeview" role="menu" data-accordion="false">
-                <h1 class="font-weight-bolder">Bienvenue sur {{ $app->nom }}</h1>
-                <center>
-                  <button id="bt" class="btn btn-primary">Accéder au tableau de bord</button>
-                  
-                </center>
-              </div>
               {{-- @include('admin.dashboard') --}}
             </h2>
           </div>
           <div class="tab-loading">
             <div>
-              <h2 class="display-4"><img src="{{ asset('dashboard/img/img.gif')}}" alt="coq"></h2>
+              <h2 class="display-4"></h2>
             </div>
           </div>
         </div>
       </div>
-      <script>
-                    var button = document.getElementById('bt');
-                    button.addEventListener('click', function(e){
-                      var acc = document.getElementById('ac');
-                       acc.click();
-                    })
-                  </script>
     @include('partials.footer')
 @endsection

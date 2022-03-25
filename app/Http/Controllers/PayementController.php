@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Facture;
+use App\Models\Payement;
 use Illuminate\Http\Request;
-use App\Models\App;
 
-class AppController extends Controller
+class PayementController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +15,7 @@ class AppController extends Controller
      */
     public function index()
     {
-        $app = auth()->user()->societe->app;
-
-        return view('index', compact('app'));
+        //
     }
 
     /**
@@ -37,7 +36,20 @@ class AppController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $facture = Facture::where('id', $request->facture_id)->first();
+
+        $acompte = $facture->payements->sum('montant_paye')+$request->acompte;
+
+        $payement = Payement::create([
+            'facture_id' => $facture->id,
+            'montant_paye' => $request->acompte,
+            'acompte' => $acompte,
+            'reste' => ($facture->montant > $acompte) ? $facture->montant-$acompte : 0,
+        ]);
+
+        return response()->json([
+            'paiement' => $payement
+        ]);
     }
 
     /**
@@ -46,9 +58,9 @@ class AppController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Payement $payement)
     {
-        //
+
     }
 
     /**
@@ -85,10 +97,10 @@ class AppController extends Controller
         //
     }
 
-    public function settingSocete()
+    public function dataPayement(Facture $facture)
     {
-        $app = auth()->user()->societe->app;
-
-        return view('settings.societe', compact('app'));
+        return response()->json([
+            'paiement' => $facture->payements->last(),
+        ]);
     }
 }

@@ -21,6 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'telephone',
+        'role',
+        'societe_id',
+
     ];
 
     /**
@@ -41,4 +45,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function factures(){
+        return $this->hasMany(Facture::class, 'user_id');
+    }
+
+    public function societe(){
+        
+        return $this->belongsTo(Societe::class, 'societe_id');
+    }
 }

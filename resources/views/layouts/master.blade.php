@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ $title }}</title>
 
@@ -18,17 +19,25 @@
   <!-- JQVMap -->
   <link rel="stylesheet" href="{{ asset('dashboard/plugins/jqvmap/jqvmap.min.css') }}">
   <!-- Theme style -->
-  <link rel="stylesheet" href="{{ asset('dashboard/css/adminlte.min.css') }}">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{{ asset('dashboard/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
   <!-- Daterange picker -->
   <link rel="stylesheet" href="{{ asset('dashboard/plugins/daterangepicker/daterangepicker.css') }}">
   <!-- summernote -->
   <link rel="stylesheet" href="{{ asset('dashboard/plugins/summernote/summernote-bs4.min.css') }}">
+  
+  <link rel="stylesheet" href="{{ asset('dashboard/plugins/toastr/toastr.min.css') }}">
+  
+  <link rel="stylesheet" href="{{ asset('dashboard/css/adminlte.min.css') }}">
 
+
+    @yield('script2')
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
+  <div class="preloader flex-column justify-content-center align-items-center">
+    <img class="animation__wobble" src="{{ asset('dashboard/img/img.gif')}}" alt="coq">
+  </div>
     <div class="wrapper">
         @yield('content')
     </div>
@@ -47,11 +56,13 @@
 <script src="{{ asset('dashboard/plugins/sparklines/sparkline.js') }}"></script>
 <!-- JQVMap -->
 <script src="{{ asset('dashboard/plugins/jqvmap/jquery.vmap.min.js') }}"></script>
+
 <script src="{{ asset('dashboard/plugins/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
 <!-- jQuery Knob Chart -->
 <script src="{{ asset('dashboard/plugins/jquery-knob/jquery.knob.min.js') }}"></script>
 <!-- daterangepicker -->
 <script src="{{ asset('dashboard/plugins/moment/moment.min.js') }}"></script>
+
 <script src="{{ asset('dashboard/plugins/daterangepicker/daterangepicker.js') }}"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="{{ asset('dashboard/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
@@ -65,4 +76,13 @@
 <script src="{{ asset('dashboard/js/demo.js') }}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ asset('dashboard/js/pages/dashboard.js') }}"></script>
+<script>
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+    }
+});
+</script>
+
+@yield('script')
 </body>

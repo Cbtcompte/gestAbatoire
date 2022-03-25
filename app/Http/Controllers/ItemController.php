@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
+use App\Models\Item;
+use App\Models\SousArticle;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
@@ -34,7 +37,33 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'client_id' => 'required',
+            'sous_article_id' => 'required',
+            'qte' => 'required',
+            'prix' => 'required',
+            'montant' => 'required',
+            'facture_id' => 'required',
+        ]);
+
+
+        $tmp = Item::create([
+            'client_id' => $request->client_id,
+            'sous_article_id' => $request->sous_article_id,
+            'qte' => $request->qte,
+            'prix' => $request->prix,
+            'montant' => $request->montant,
+            'facture_id' => $request->facture_id,
+            'type' => 'attent'
+        ]);
+
+        $tmp = Item::findOrfail($tmp->id);
+
+        $sous = SousArticle::find($request->sous_article_id);
+
+        $article = Article::find($sous->article_id);
+
+        return response()->json(['tmp' => $tmp, 'sous' => $sous, 'article' => $article]);
     }
 
     /**
@@ -79,6 +108,11 @@ class ItemController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $item = Item::withTrashed()->find($id);
+
+       Item::where('id', $item->id)->forceDelete();
+
+        return response()->json(['message' => 'Supression réussir', 'total' => $item->montant]);
     }
+
 }

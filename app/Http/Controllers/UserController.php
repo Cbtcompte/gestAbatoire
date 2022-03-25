@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Validation\Rule;
 use App\Models\App;
+use Illuminate\Support\Facades\Hash;
 
-class AppController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +17,9 @@ class AppController extends Controller
      */
     public function index()
     {
-        $app = auth()->user()->societe->app;
-
-        return view('index', compact('app'));
+        $app = App::get()->first();
+        $users = User::all();
+        return view('users.index', compact('app', 'users'));
     }
 
     /**
@@ -24,9 +27,15 @@ class AppController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($retour = null)
     {
-        //
+        if($retour !=null){
+            $retour = true;
+        }else{
+            $retour = false;
+        }
+        $app = App::get()->first();
+        return view('users.create', compact('app', 'retour'));
     }
 
     /**
@@ -37,7 +46,22 @@ class AppController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string',
+            'email' => ['nullable', 'email', Rule::unique(User::class),],
+            'telephone' => 'required|digits:8',
+            'password' => 'required|min:6|confirmed'
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'telephone' => $request->telephone,
+            'password' => Hash::make($request->password),
+            'role' => 'cassier'
+        ]);
+
+        return redirect()->route('user.index')->with('message', 'Utilisateur ajouté');
     }
 
     /**
@@ -83,12 +107,5 @@ class AppController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function settingSocete()
-    {
-        $app = auth()->user()->societe->app;
-
-        return view('settings.societe', compact('app'));
     }
 }

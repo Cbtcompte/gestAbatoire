@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ItemResource;
 use App\Models\App;
 use App\Models\Item;
 use App\Models\Client;
@@ -26,9 +27,10 @@ class FactureController extends Controller
             $retour = false;
         }
 
-        $factures = Facture::where('user_id', auth()->user()->id)->get();
+        $factures = Facture::where('user_id', auth()->user()->id)->orderByDesc('created_at')->get();
+        $configApp = auth()->user()->societe->configsociete;
 
-        return view('factures.index', compact('factures', 'retour'));
+        return view('factures.index', compact('factures', 'retour', 'configApp'));
     }
 
     /**
@@ -49,7 +51,8 @@ class FactureController extends Controller
         $articles = Article::all();
         $sousarticles = SousArticle::all();
         $app = App::get()->first();
-        return view('factures.create', compact('app', 'articles', 'clients', 'id'));
+        $configApp = auth()->user()->societe->configsociete;
+        return view('factures.create', compact('app', 'articles', 'clients', 'id', 'configApp'));
     }
 
     /**
@@ -69,9 +72,15 @@ class FactureController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Facture $facture)
     {
-        //
+        return response()->json([
+            'status' => ($facture->payements->last()->reste == 0) ? "SOLDE" : "NON SOLDE",
+            'client' => $facture->client,
+            'items' => ItemResource::collection($facture->items),
+            'facture' => $facture,
+            'paiement' => $facture->payements->last(),
+        ]);
     }
 
     /**
@@ -103,9 +112,14 @@ class FactureController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Facture $facture)
     {
-        //
+        $facture->items->delete();
+        $facture->payements->delete();
+        $facture->delete();
+        return response()->json([
+            'message' => 'Facture supprimée'
+        ]);
     }
 
     public function etablir($id, Request $request){

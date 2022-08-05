@@ -20,4 +20,13 @@ class PdfController extends Controller
                             ->setWarnings(false)
                             ->stream();
     }
+
+    public function reglement(Facture $facture){
+
+        $reglement = $facture->payements;
+        return PDF::loadView('pdf.reglement', compact('facture','reglement'))
+                            ->setPaper('a4', 'portrait')
+                            ->setWarnings(false)
+                            ->stream();
+    }
 }

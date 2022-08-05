@@ -103,4 +103,12 @@ class PayementController extends Controller
             'paiement' => $facture->payements->last(),
         ]);
     }
+
+    public function detailPayement(Facture $facture){
+        return response()->json([
+            'client' => $facture->client,
+            'paiement' => $facture->payements,
+            'status' => ($facture->payements->last()->reste == 0) ? "SOLDE" : "NON SOLDE"
+        ]);
+    }
 }

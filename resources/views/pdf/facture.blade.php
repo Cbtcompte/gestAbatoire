@@ -43,7 +43,7 @@
                             <th style="text-align: left">Opérateur : <td style="font-weight: normal">{{ $facture->user->name}}</td></th>
                             <th style="text-align: left">Code Opérateur : <td style="font-weight: normal">{{ $facture->user_id}}</td></th>
                         </tr>
-                        @if(isset($fact->client->nom))
+                        @if(isset($facture->client->name))
                             <tr>
                                 <th style="text-align: left">Nom client : <td style="font-weight: normal">{{ $facture->client->name }}</td></th>
                                 <th style="text-align: left">Date : <td style="font-weight: normal">{{ date('d/m/Y', strtotime($facture->created_at)) }}</td></th>

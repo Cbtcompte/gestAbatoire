@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -21,6 +22,11 @@ class Facture extends Model
         'id',
         'status'
     ];
+
+     protected $casts = [
+        'created_at' => 'datetime:Y-m-d'
+    ];
+
 
     public $incrementing  = false;
 
@@ -51,4 +57,6 @@ class Facture extends Model
     {
         return $this->hasMany(Payement::class, 'facture_id');
     }
+
+
 }
